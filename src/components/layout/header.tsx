@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 
 const Logo = () => (
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-primary">
@@ -26,12 +25,7 @@ export function Header() {
           </Link>
         </nav>
         <div className="flex flex-1 items-center justify-end gap-2">
-            <Button asChild variant="ghost">
-                <Link href="/admin">Admin Portal</Link>
-            </Button>
-            <Button asChild>
-                <Link href="/manager/login">Manager Portal</Link>
-            </Button>
+            {/* Links removed and will be placed in specific layouts */}
         </div>
       </div>
     </header>
