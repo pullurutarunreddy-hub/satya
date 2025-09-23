@@ -30,7 +30,7 @@ export function Header() {
                 <Link href="/admin">Admin Portal</Link>
             </Button>
             <Button asChild>
-                <Link href="/manager">Manager Portal</Link>
+                <Link href="/manager/login">Manager Portal</Link>
             </Button>
         </div>
       </div>
