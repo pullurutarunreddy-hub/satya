@@ -1,7 +1,10 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ListChecks, HandCoins, UserPlus, Users, IndianRupee, CircleAlert, Settings, BarChart3 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const kpis = [
     { title: "Total Revenue (YTD)", value: "₹12,45,000", icon: IndianRupee },
@@ -11,6 +14,17 @@ const kpis = [
 ];
 
 export default function AdminDashboard() {
+  const { toast } = useToast();
+
+  const handleExport = () => {
+    toast({
+        title: "Exporting Reports",
+        description: "Your report is being generated and will download shortly.",
+    });
+    // In a real application, this would trigger a download.
+    console.log("Exporting reports...");
+  }
+
   return (
     <div className="container mx-auto py-12 px-4 space-y-8">
       <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
@@ -24,7 +38,7 @@ export default function AdminDashboard() {
                     <UserPlus className="mr-2" /> Create Manager
                 </Link>
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleExport}>
                 Export Reports
             </Button>
         </div>

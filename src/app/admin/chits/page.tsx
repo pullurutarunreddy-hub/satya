@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getChitPlans } from "@/lib/data";
 import { PlusCircle } from "lucide-react";
+import Link from "next/link";
 
 export default function AdminChitsPage() {
     const plans = getChitPlans();
@@ -18,9 +19,11 @@ export default function AdminChitsPage() {
                 <CardTitle>Chit Plans</CardTitle>
                 <CardDescription>Create, edit, and manage all chit plans.</CardDescription>
             </div>
-            <Button>
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Create New Plan
+            <Button asChild>
+                <Link href="/admin/chits/create">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Create New Plan
+                </Link>
             </Button>
         </CardHeader>
         <CardContent>

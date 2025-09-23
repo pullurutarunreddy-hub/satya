@@ -1,9 +1,13 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 const applications = [
   { id: 'APP001', name: 'Ravi Kumar', chitPlan: '1 Lakh Chitti', status: 'Pending', submitted: '2024-07-28' },
@@ -13,6 +17,17 @@ const applications = [
 ];
 
 export default function AdminApplicationsPage() {
+  const { toast } = useToast();
+
+  const handleStatusChange = (appName: string, newStatus: 'Verified' | 'Rejected') => {
+    toast({
+      title: `Application ${newStatus}`,
+      description: `${appName}'s application has been marked as ${newStatus}.`,
+      variant: newStatus === 'Rejected' ? 'destructive' : 'default',
+    });
+    // Here you would typically also update the state or refetch data
+  };
+
   return (
     <div className="container mx-auto py-12 px-4">
       <Card>
@@ -51,9 +66,15 @@ export default function AdminApplicationsPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Mark as Verified</DropdownMenuItem>
-                        <DropdownMenuItem>Reject</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href={`/admin/applications/${app.id}`}>View Details</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleStatusChange(app.name, 'Verified')}>
+                          Mark as Verified
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleStatusChange(app.name, 'Rejected')} className="text-destructive">
+                          Reject
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
