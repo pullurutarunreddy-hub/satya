@@ -2,15 +2,12 @@ export type ChitPlan = {
   id: string;
   title: string;
   capital: number;
-  monthlyPayment: number;
-  duration: number; // in months
-  payoutRange: {
-    min: number;
-    max: number;
-  };
+  monthly: number;
+  months: number;
+  payoutRange: string;
   startDate: string; // ISO date string
   onboardingFee: number;
-  liftingOptions: string;
-  payoutSchedule: { month: number; amount: number }[];
-  totalMembers: number;
+  liftingOption: string;
+  joiningOpen: boolean;
+  totalMembers: number; // Corresponds to maxSeats
 };

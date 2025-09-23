@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Calendar, IndianRupee, Info, SlidersHorizontal, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { getChitPlans } from '@/lib/data';
 
 type ChitDetailPageProps = {
   params: {
@@ -42,6 +43,12 @@ const DetailItem = ({ icon: Icon, label, value }: { icon: React.ElementType, lab
 
 export default function ChitDetailPage({ params }: ChitDetailPageProps) {
   const plan = getChitPlanById(params.id);
+  const plans = getChitPlans();
+  const randomPayoutSchedule = Array.from({ length: plan?.months || 20 }, (_, i) => ({
+    month: i + 1,
+    amount: Math.floor(Math.random() * (115000 - 96000 + 1)) + 96000,
+  }));
+
 
   if (!plan) {
     notFound();
@@ -61,9 +68,9 @@ export default function ChitDetailPage({ params }: ChitDetailPageProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-6 bg-secondary/30 rounded-lg">
                 <DetailItem icon={Calendar} label="Start Date" value={formatDate(plan.startDate)} />
                 <DetailItem icon={IndianRupee} label="Onboarding Fee" value={formatCurrency(plan.onboardingFee)} />
-                <DetailItem icon={SlidersHorizontal} label="Lifting Options" value={plan.liftingOptions} />
-                <DetailItem icon={IndianRupee} label="Monthly Payment" value={formatCurrency(plan.monthlyPayment)} />
-                <DetailItem icon={Users} label="Duration / Seats" value={`${plan.duration} months / ${plan.totalMembers} seats`} />
+                <DetailItem icon={SlidersHorizontal} label="Lifting Options" value={plan.liftingOption} />
+                <DetailItem icon={IndianRupee} label="Monthly Payment" value={formatCurrency(plan.monthly)} />
+                <DetailItem icon={Users} label="Duration / Seats" value={`${plan.months} months / ${plan.totalMembers} seats`} />
             </div>
             
             <div>
@@ -77,7 +84,7 @@ export default function ChitDetailPage({ params }: ChitDetailPageProps) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {plan.payoutSchedule.map((payout) => (
+                            {randomPayoutSchedule.map((payout) => (
                             <TableRow key={payout.month}>
                                 <TableCell className="font-medium">{payout.month}</TableCell>
                                 <TableCell className="text-right">{formatCurrency(payout.amount)}</TableCell>

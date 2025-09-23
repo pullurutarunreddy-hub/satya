@@ -39,8 +39,8 @@ export default function AdminChitsPage() {
                 <TableRow key={plan.id}>
                   <TableCell className="font-medium">{plan.title}</TableCell>
                   <TableCell>{formatCurrency(plan.capital)}</TableCell>
-                  <TableCell>{formatCurrency(plan.monthlyPayment)}</TableCell>
-                  <TableCell>{plan.duration} months</TableCell>
+                  <TableCell>{formatCurrency(plan.monthly)}</TableCell>
+                  <TableCell>{plan.months} months</TableCell>
                   <TableCell><Badge>Active</Badge></TableCell>
                 </TableRow>
               ))}

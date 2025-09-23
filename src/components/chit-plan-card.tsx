@@ -39,21 +39,21 @@ export function ChitPlanCard({ plan }: ChitPlanCardProps) {
                 <IndianRupee className="w-5 h-5 text-muted-foreground" />
                 <div>
                     <p className="text-muted-foreground">Monthly</p>
-                    <p className="font-semibold">{formatCurrency(plan.monthlyPayment)}</p>
+                    <p className="font-semibold">{formatCurrency(plan.monthly)}</p>
                 </div>
             </div>
             <div className="flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-muted-foreground" />
                 <div>
                     <p className="text-muted-foreground">Duration</p>
-                    <p className="font-semibold">{plan.duration} months</p>
+                    <p className="font-semibold">{plan.months} months</p>
                 </div>
             </div>
             <div className="flex items-center gap-2 col-span-2">
                 <Landmark className="w-5 h-5 text-muted-foreground" />
                 <div>
                     <p className="text-muted-foreground">Payout Range</p>
-                    <p className="font-semibold">{formatCurrency(plan.payoutRange.min)} - {formatCurrency(plan.payoutRange.max)}</p>
+                    <p className="font-semibold">{plan.payoutRange}</p>
                 </div>
             </div>
         </CardContent>
