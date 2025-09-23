@@ -73,8 +73,7 @@ export default function ManagerDashboardPage() {
                                         <TableCell>{Math.floor(Math.random() * chit.totalMembers)} / {chit.totalMembers}</TableCell>
                                         <TableCell className="text-right">
                                             <Button variant="outline" size="sm" asChild>
-                                                {/* This will later be linked to a chit-specific members page */}
-                                                <Link href="#">View Members</Link>
+                                                <Link href={`/manager/chits/${chit.id}`}>View Members</Link>
                                             </Button>
                                         </TableCell>
                                     </TableRow>
