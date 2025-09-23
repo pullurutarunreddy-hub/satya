@@ -8,7 +8,7 @@ export default function Home() {
     <div className="container mx-auto py-12 px-4">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tight">
-          Welcome to ChitConnect
+          Welcome to Satya Community Chits
         </h1>
         <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
           Secure your financial future with our transparent and reliable chit fund plans. Browse our active plans below and find the one that fits your goals.

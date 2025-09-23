@@ -14,7 +14,7 @@ function AdminHeader() {
         <div className="container flex h-16 items-center">
           <Link href="/admin" className="flex items-center gap-2 mr-8">
             <Logo />
-            <span className="font-bold font-headline text-lg">ChitConnect - Admin</span>
+            <span className="font-bold font-headline text-lg">Satya Community Chits - Admin</span>
           </Link>
           <nav className="flex items-center gap-6 text-sm font-medium">
             <Link

@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 
 export const metadata: Metadata = {
-  title: 'ChitConnect',
+  title: 'Satya Community Chits',
   description: 'A modern solution for managing chit funds.',
   manifest: '/manifest.json',
 };

@@ -21,7 +21,7 @@ export default function OnboardingSuccessPage() {
                     />
                 )}
                 <CheckCircle2 className="h-16 w-16 text-green-500 mb-4" />
-                <h1 className="text-4xl font-bold font-headline mb-2">Welcome to ChitConnect!</h1>
+                <h1 className="text-4xl font-bold font-headline mb-2">Welcome to Satya Community Chits!</h1>
                 <p className="text-lg text-muted-foreground mb-8">
                     Your onboarding is complete. We're excited to have you with us.
                 </p>

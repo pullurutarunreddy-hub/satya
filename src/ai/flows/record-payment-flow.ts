@@ -72,7 +72,7 @@ const recordPaymentPrompt = ai.definePrompt({
     First, you MUST use the sendSms tool to send a confirmation SMS to the customer.
     The SMS should be polite and confirm the amount received.
     
-    Example SMS: "Dear {customer_name}, we have received your payment of ₹{amount}. Thank you for your payment. - ChitConnect"
+    Example SMS: "Dear {customer_name}, we have received your payment of ₹{amount}. Thank you for your payment. - Satya Community Chits"
     
     After sending the SMS, respond with a success message for the manager.`,
 });
