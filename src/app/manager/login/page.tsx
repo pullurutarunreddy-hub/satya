@@ -17,7 +17,7 @@ export default function ManagerLoginPage() {
           <form className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="manager@example.com" required />
+              <Input id="email" type="email" placeholder="manager@example.com" defaultValue="manager@example.com" required />
             </div>
             <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -26,11 +26,13 @@ export default function ManagerLoginPage() {
                         Forgot password?
                     </Link>
                 </div>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" defaultValue="password" required />
             </div>
-            <Button type="submit" className="w-full">
-              <LogIn className="mr-2" />
-              Sign In
+            <Button type="submit" className="w-full" asChild>
+              <Link href="/manager/dashboard">
+                <LogIn className="mr-2" />
+                Sign In
+              </Link>
             </Button>
           </form>
         </CardContent>
