@@ -30,7 +30,7 @@ export default function ManagerLoginPage() {
             </div>
             <Button type="submit" className="w-full" asChild>
               <Link href="/manager/dashboard">
-                <LogIn className="mr-2" />
+                <LogIn className="mr-2 h-4 w-4" />
                 Sign In
               </Link>
             </Button>
