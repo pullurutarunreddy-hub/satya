@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from "react";
 import { notFound } from "next/navigation";
 import { getChitPlanById } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -8,6 +11,9 @@ import { MoreHorizontal, FileText, Landmark, AlertTriangle } from "lucide-react"
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { MemberDetailsDialog } from "@/components/manager/member-details-dialog";
+import { RecordPaymentDialog } from "@/components/manager/record-payment-dialog";
+import { FlagForReviewDialog } from "@/components/manager/flag-for-review-dialog";
 
 type ManagerChitDetailsPageProps = {
     params: {
@@ -22,6 +28,8 @@ const dummyMembers = [
     { id: 'MEM004', name: 'Ananya Gupta', mobile: '9876543213', seat: 4, status: 'active', monthsCompleted: 5, amountPaid: 25000, amountDue: 0, lastPayment: '2024-07-20' },
     { id: 'MEM005', name: 'Kabir Kumar', mobile: '9876543214', seat: 5, status: 'pending', monthsCompleted: 0, amountPaid: 500, amountDue: 0, lastPayment: '2024-07-25' },
 ];
+
+type DummyMember = typeof dummyMembers[0];
 
 const formatCurrency = (amount: number) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(amount);
 
@@ -38,8 +46,18 @@ const statusVariant = (status: string) => {
 export default function ManagerChitDetailsPage({ params }: ManagerChitDetailsPageProps) {
     const plan = getChitPlanById(params.id);
 
+    const [selectedMember, setSelectedMember] = useState<DummyMember | null>(null);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+    const [isFlagOpen, setIsFlagOpen] = useState(false);
+
     if (!plan) {
         notFound();
+    }
+
+    const openDialog = (member: DummyMember, dialogSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
+        setSelectedMember(member);
+        dialogSetter(true);
     }
 
     return (
@@ -99,9 +117,15 @@ export default function ManagerChitDetailsPage({ params }: ManagerChitDetailsPag
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem><FileText className="mr-2"/>View Details</DropdownMenuItem>
-                                                <DropdownMenuItem><Landmark className="mr-2"/>Record Payment</DropdownMenuItem>
-                                                <DropdownMenuItem><AlertTriangle className="mr-2"/>Flag for Review</DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => openDialog(member, setIsDetailsOpen)}>
+                                                    <FileText className="mr-2"/>View Details
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => openDialog(member, setIsPaymentOpen)}>
+                                                    <Landmark className="mr-2"/>Record Payment
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => openDialog(member, setIsFlagOpen)}>
+                                                    <AlertTriangle className="mr-2"/>Flag for Review
+                                                </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
@@ -111,6 +135,26 @@ export default function ManagerChitDetailsPage({ params }: ManagerChitDetailsPag
                     </Table>
                 </CardContent>
             </Card>
+
+            {selectedMember && (
+                <>
+                    <MemberDetailsDialog
+                        member={selectedMember}
+                        open={isDetailsOpen}
+                        onOpenChange={setIsDetailsOpen}
+                    />
+                    <RecordPaymentDialog
+                        member={selectedMember}
+                        open={isPaymentOpen}
+                        onOpenChange={setIsPaymentOpen}
+                    />
+                    <FlagForReviewDialog
+                        member={selectedMember}
+                        open={isFlagOpen}
+                        onOpenChange={setIsFlagOpen}
+                    />
+                </>
+            )}
         </div>
     );
 }
