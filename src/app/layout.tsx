@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/footer';
 export const metadata: Metadata = {
   title: 'ChitConnect',
   description: 'A modern solution for managing chit funds.',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -24,6 +25,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
           rel="stylesheet"
         />
+        <meta name="theme-color" content="#4299e1" />
       </head>
       <body
         className={cn(
