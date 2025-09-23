@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ListChecks, HandCoins, UserPlus, Users, IndianRupee, CircleAlert, CircleCheck, BarChart3 } from "lucide-react";
+import { ListChecks, HandCoins, UserPlus, Users, IndianRupee, CircleAlert, Settings, BarChart3 } from "lucide-react";
 
 const kpis = [
     { title: "Total Revenue (YTD)", value: "₹12,45,000", icon: IndianRupee },
@@ -90,6 +90,22 @@ export default function AdminDashboard() {
                 </p>
                 <Button asChild>
                 <Link href="/admin/chits">View Chit Plans</Link>
+                </Button>
+            </CardContent>
+            </Card>
+             <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                <Settings className="text-primary" />
+                Site Settings
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-muted-foreground mb-4">
+                Manage site appearance, banners, and offers.
+                </p>
+                <Button asChild>
+                <Link href="/admin/settings">Manage Settings</Link>
                 </Button>
             </CardContent>
             </Card>
