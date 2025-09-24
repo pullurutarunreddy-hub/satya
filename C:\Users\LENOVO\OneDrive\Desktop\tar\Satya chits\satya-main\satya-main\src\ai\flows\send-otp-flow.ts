@@ -35,8 +35,6 @@ const sendOtpFlow = ai.defineFlow(
 
     otpStore[input.mobile] = { otp, expires };
 
-    console.log(`Generated OTP for ${input.mobile}: ${otp}`);
-
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
     const authToken = process.env.TWILIO_AUTH_TOKEN;
     const fromNumber = process.env.TWILIO_FROM_NUMBER;
@@ -55,9 +53,11 @@ const sendOtpFlow = ai.defineFlow(
         to: `+91${input.mobile}`,
       });
       return { success: true, message: 'OTP sent successfully.' };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to send SMS via Twilio:', error);
-      return { success: false, message: 'Failed to send OTP.' };
+      // Pass the specific error message back to the client
+      const errorMessage = error.message || 'An unknown error occurred with the SMS service.';
+      return { success: false, message: `Failed to send OTP: ${errorMessage}` };
     }
   }
 );

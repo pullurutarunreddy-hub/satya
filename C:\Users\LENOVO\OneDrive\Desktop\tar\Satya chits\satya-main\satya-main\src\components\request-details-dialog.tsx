@@ -51,19 +51,21 @@ export function RequestDetailsDialog({ planId, open, onOpenChange }: RequestDeta
           description: 'An OTP has been sent to your mobile number.',
         });
       } else {
+        // Use the detailed error message from the flow
         setError(result.message);
         toast({
-          title: 'Error',
+          title: 'Failed to Send OTP',
           description: result.message,
           variant: 'destructive',
         });
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError('An unexpected error occurred. Please try again.');
+      const errorMessage = err.message || 'An unexpected error occurred.';
+      setError(errorMessage);
       toast({
           title: 'Error',
-          description: 'An unexpected error occurred.',
+          description: errorMessage,
           variant: 'destructive',
         });
     } finally {
@@ -91,10 +93,21 @@ export function RequestDetailsDialog({ planId, open, onOpenChange }: RequestDeta
             router.push(`/chit/${planId}`);
         } else {
             setError(result.message);
+            toast({
+                title: 'Verification Failed',
+                description: result.message,
+                variant: 'destructive',
+            });
         }
-    } catch(err) {
+    } catch(err: any) {
         console.error(err);
-        setError('An unexpected error occurred. Please try again.');
+        const errorMessage = err.message || 'An unexpected error occurred.';
+        setError(errorMessage);
+        toast({
+          title: 'Error',
+          description: errorMessage,
+          variant: 'destructive',
+        });
     } finally {
         setIsLoading(false);
     }
