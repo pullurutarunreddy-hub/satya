@@ -43,14 +43,7 @@ const sendOtpFlow = ai.defineFlow(
 
     if (!accountSid || !authToken || !fromNumber) {
       console.error('Twilio credentials are not set in environment variables.');
-      // For Vercel preview deployments, we can bypass the actual SMS
-      if (process.env.VERCEL_ENV !== 'production') {
-        return {
-          success: true,
-          message: `OTP sent (simulation for dev environment). OTP is ${otp}`,
-        };
-      }
-      return { success: false, message: 'Server configuration error.' };
+      return { success: false, message: 'Server configuration error. Missing Twilio credentials.' };
     }
 
     const client = new Twilio(accountSid, authToken);

@@ -74,7 +74,7 @@ export function RequestDetailsDialog({ planId, open, onOpenChange }: RequestDeta
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otp.length !== 6) {
-      setError('Invalid OTP. Please try again.');
+      setError('Please enter a valid 6-digit OTP.');
       return;
     }
     setError('');
