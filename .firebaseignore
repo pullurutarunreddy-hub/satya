@@ -1,0 +1,11 @@
+# Mac
+.DS_Store
+
+# Next.js
+.next/
+out/
+
+# General
+node_modules/
+.git/
+.env*
