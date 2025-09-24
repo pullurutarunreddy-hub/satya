@@ -57,8 +57,8 @@ function AdminHeader() {
     );
 }
 
-// Dummy check for admin user. In a real app, this would involve checking roles from Firestore or custom claims.
-const ADMIN_EMAILS = ['admin@example.com'];
+// In a real app, this would involve checking roles from Firestore or custom claims.
+const ADMIN_PHONE_NUMBERS = ['+919999999999']; // Replace with actual admin phone numbers in E.164 format
 
 export default function AdminLayout({
   children,
@@ -69,12 +69,12 @@ export default function AdminLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && (!user || !ADMIN_EMAILS.includes(user.email || ''))) {
+    if (!loading && (!user || !ADMIN_PHONE_NUMBERS.includes(user.phoneNumber || ''))) {
       router.push('/login'); // Redirect non-admins to the main login page
     }
   }, [user, loading, router]);
   
-  if (loading || !user || !ADMIN_EMAILS.includes(user.email || '')) {
+  if (loading || !user || !ADMIN_PHONE_NUMBERS.includes(user.phoneNumber || '')) {
     // You can show a loader here or just a blank screen while redirecting
     return null; 
   }

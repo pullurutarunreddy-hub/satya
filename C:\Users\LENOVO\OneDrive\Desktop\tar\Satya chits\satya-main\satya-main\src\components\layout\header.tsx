@@ -16,7 +16,7 @@ const Logo = () => (
 
 
 export function Header() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -40,17 +40,15 @@ export function Header() {
           </Link>
         </nav>
         <div className="flex flex-1 items-center justify-end gap-2">
-            {user ? (
-              <Button variant="ghost" onClick={handleLogout}>Logout</Button>
+            {loading ? null : user ? (
+              <div className='flex items-center gap-4'>
+                <span className='text-sm text-muted-foreground'>{user.phoneNumber}</span>
+                <Button variant="ghost" onClick={handleLogout}>Logout</Button>
+              </div>
             ) : (
-              <>
-                <Button variant="ghost" asChild>
-                  <Link href="/login">Login</Link>
-                </Button>
-                <Button asChild>
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-              </>
+              <Button asChild>
+                <Link href="/login">Login / Sign Up</Link>
+              </Button>
             )}
         </div>
       </div>
