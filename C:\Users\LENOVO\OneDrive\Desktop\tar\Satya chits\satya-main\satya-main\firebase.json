@@ -1,6 +1,9 @@
 {
-  "apphosting": {
-    "source": ".",
-    "backend": "satya-chits-backend"
-  }
+  "apphosting": [
+    {
+      "backend": "satya-chits-backend",
+      "region": "asia-southeast1",
+      "source": "."
+    }
+  ]
 }
