@@ -1,6 +1,6 @@
 {
   "apphosting": {
-    "source": ".",
-    "backend": "satya-chits-backend"
+    "backend": "satya-chits-backend",
+    "source": "."
   }
 }
