@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -31,9 +32,15 @@ export default function LoginPage() {
         title: 'Login Successful!',
         description: 'Welcome back.',
       });
-      router.push('/');
+      const redirectUrl = searchParams.get('redirect') || '/';
+      const isAdmin = email === 'admin@example.com';
+      router.push(isAdmin ? '/admin' : redirectUrl);
     } catch (err: any) {
-      setError(err.message);
+      let friendlyMessage = 'An unknown error occurred.';
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        friendlyMessage = 'Invalid email or password. Please try again.';
+      }
+      setError(friendlyMessage);
     } finally {
       setIsLoading(false);
     }
