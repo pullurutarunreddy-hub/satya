@@ -52,8 +52,7 @@ export function ChitPlanCard({ plan }: ChitPlanCardProps) {
             <div className="flex items-center gap-2 col-span-2">
                 <Landmark className="w-5 h-5 text-muted-foreground" />
                 <div>
-                    <p className="text-muted-foreground">Payout Range</p>
-                    <p className="font-semibold">{plan.payoutRange}</p>
+                    <p className="text-muted-foreground">Payout Range</p>                    <p className="font-semibold">{plan.payoutRange}</p>
                 </div>
             </div>
         </CardContent>
