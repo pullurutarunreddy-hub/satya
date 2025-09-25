@@ -45,7 +45,7 @@ export default function AdminApplicationsPage() {
 
   useEffect(() => {
     fetchApplications();
-  }, [toast]);
+  }, []);
 
   const handleStatusChange = async (appId: string, appName: string, newStatus: 'Approved' | 'Rejected') => {
     try {
