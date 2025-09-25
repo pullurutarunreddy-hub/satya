@@ -1,30 +1,95 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MoreHorizontal, PlusCircle, UploadCloud, Edit, Trash2 } from "lucide-react";
+import { MoreHorizontal, PlusCircle, UploadCloud, Edit, Trash2, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { db } from "@/lib/firebase";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { useToast } from "@/hooks/use-toast";
+import { BannerFormDialog } from "@/components/admin/banner-form-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import type { Banner } from "@/lib/types";
 
-const dummyBanners = [
-  { id: 'BNR001', title: 'Summer Bonanza', imageUrl: 'https://picsum.photos/seed/banner1/300/100', linkUrl: '/offers/summer', active: true },
-  { id: 'BNR002', title: 'New Year Offer', imageUrl: 'https://picsum.photos/seed/banner2/300/100', linkUrl: '/offers/new-year', active: false },
-];
 
 export default function AdminSettingsPage() {
+    const [banners, setBanners] = useState<Banner[]>([]);
+    const [loadingBanners, setLoadingBanners] = useState(true);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [selectedBanner, setSelectedBanner] = useState<Banner | null>(null);
+    const { toast } = useToast();
+
+    const fetchBanners = async () => {
+        setLoadingBanners(true);
+        try {
+            const querySnapshot = await getDocs(collection(db, "banners"));
+            const bannersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Banner[];
+            setBanners(bannersData);
+        } catch (error) {
+            console.error("Error fetching banners: ", error);
+            toast({ title: "Error", description: "Could not fetch banners.", variant: "destructive" });
+        } finally {
+            setLoadingBanners(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchBanners();
+    }, []);
+
+    const handleFormSuccess = () => {
+        fetchBanners(); // Refetch banners after a successful add/edit
+        setIsFormOpen(false);
+        setSelectedBanner(null);
+    }
+    
+    const handleEditClick = (banner: Banner) => {
+        setSelectedBanner(banner);
+        setIsFormOpen(true);
+    };
+
+    const handleAddClick = () => {
+        setSelectedBanner(null);
+        setIsFormOpen(true);
+    };
+
+    const handleToggleActive = async (banner: Banner) => {
+        try {
+            const bannerRef = doc(db, "banners", banner.id);
+            await updateDoc(bannerRef, { active: !banner.active });
+            toast({ title: "Status Updated", description: `${banner.title} is now ${!banner.active ? 'Active' : 'Inactive'}.` });
+            fetchBanners();
+        } catch (error) {
+            toast({ title: "Error", description: "Failed to update status.", variant: "destructive" });
+        }
+    };
+
+    const handleDelete = async (bannerId: string) => {
+        try {
+            await deleteDoc(doc(db, "banners", bannerId));
+            toast({ title: "Banner Deleted", description: "The banner has been successfully removed." });
+            fetchBanners();
+        } catch (error) {
+            toast({ title: "Error", description: "Failed to delete banner.", variant: "destructive" });
+        }
+    };
+
   return (
+    <>
     <div className="container mx-auto py-12 px-4 space-y-8">
       <div>
         <h1 className="text-3xl font-bold">Site Settings</h1>
         <p className="text-muted-foreground">Manage your application's appearance, promotions, and account details.</p>
       </div>
 
-      <Tabs defaultValue="appearance">
+      <Tabs defaultValue="banners">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="appearance">Appearance</TabsTrigger>
           <TabsTrigger value="banners">Promotional Banners</TabsTrigger>
@@ -81,43 +146,65 @@ export default function AdminSettingsPage() {
                 <CardTitle>Promotional Banners</CardTitle>
                 <CardDescription>Manage banners on the customer dashboard.</CardDescription>
               </div>
-              <Button>
+              <Button onClick={handleAddClick}>
                 <PlusCircle className="mr-2" /> Add Banner
               </Button>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Banner</TableHead>
-                    <TableHead>Link URL</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead><span className="sr-only">Actions</span></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {dummyBanners.map((banner) => (
-                    <TableRow key={banner.id}>
-                      <TableCell className="font-medium flex items-center gap-4">
-                        <img src={banner.imageUrl} alt={banner.title} data-ai-hint="advertisement banner" className="w-32 rounded-md" />
-                        <span>{banner.title}</span>
-                      </TableCell>
-                      <TableCell>{banner.linkUrl}</TableCell>
-                      <TableCell>
-                        <Badge variant={banner.active ? 'default' : 'secondary'}>
-                          {banner.active ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                            <Button variant="ghost" size="icon"><Edit className="w-4 h-4"/></Button>
-                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive"><Trash2 className="w-4 h-4"/></Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+               {loadingBanners ? (
+                    <div className="flex justify-center items-center h-48"><Loader2 className="h-8 w-8 animate-spin" /></div>
+                ) : (
+                    <Table>
+                        <TableHeader>
+                        <TableRow>
+                            <TableHead>Banner</TableHead>
+                            <TableHead>Link URL</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead><span className="sr-only">Actions</span></TableHead>
+                        </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                        {banners.map((banner) => (
+                            <TableRow key={banner.id}>
+                            <TableCell className="font-medium flex items-center gap-4">
+                                <img src={banner.imageUrl} alt={banner.title} data-ai-hint="advertisement banner" className="w-32 h-16 object-cover rounded-md" />
+                                <span>{banner.title}</span>
+                            </TableCell>
+                            <TableCell>{banner.linkUrl}</TableCell>
+                            <TableCell>
+                                <Switch
+                                    checked={banner.active}
+                                    onCheckedChange={() => handleToggleActive(banner)}
+                                    aria-label="Toggle banner status"
+                                />
+                            </TableCell>
+                            <TableCell className="text-right">
+                                <div className="flex justify-end gap-2">
+                                    <Button variant="ghost" size="icon" onClick={() => handleEditClick(banner)}><Edit className="w-4 h-4"/></Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive"><Trash2 className="w-4 h-4"/></Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone. This will permanently delete the banner.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => handleDelete(banner.id)}>Delete</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </div>
+                            </TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                )}
             </CardContent>
           </Card>
         </TabsContent>
@@ -175,5 +262,14 @@ export default function AdminSettingsPage() {
         </TabsContent>
       </Tabs>
     </div>
+     <BannerFormDialog
+        open={isFormOpen}
+        onOpenChange={setIsFormOpen}
+        onSuccess={handleFormSuccess}
+        banner={selectedBanner}
+      />
+    </>
   );
 }
+
+    
