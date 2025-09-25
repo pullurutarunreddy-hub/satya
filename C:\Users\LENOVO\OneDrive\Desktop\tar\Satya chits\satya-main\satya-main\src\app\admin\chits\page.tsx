@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -56,9 +55,8 @@ export default function AdminChitsPage() {
                     <TableRow>
                         <TableHead>Title</TableHead>
                         <TableHead>Capital</TableHead>
-                        <TableHead>Monthly</TableHead>
+                        <TableHead>Monthly Instalment</TableHead>
                         <TableHead>Duration</TableHead>
-                        <TableHead>Status</TableHead>
                     </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -68,7 +66,6 @@ export default function AdminChitsPage() {
                         <TableCell>{formatCurrency(plan.capital)}</TableCell>
                         <TableCell>{formatCurrency(plan.monthly)}</TableCell>
                         <TableCell>{plan.months} months</TableCell>
-                        <TableCell><Badge>{plan.joiningOpen ? 'Active' : 'Closed'}</Badge></TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
