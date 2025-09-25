@@ -19,5 +19,3 @@ export type Banner = {
     linkUrl?: string;
     active: boolean;
 };
-
-    

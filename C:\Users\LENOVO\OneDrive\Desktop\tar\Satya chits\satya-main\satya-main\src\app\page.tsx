@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
 
 function BannerCarousel({ banners }: { banners: Banner[]}) {
   if (!banners || banners.length === 0) {
@@ -113,5 +114,3 @@ export default function Home() {
     </div>
   );
 }
-
-    

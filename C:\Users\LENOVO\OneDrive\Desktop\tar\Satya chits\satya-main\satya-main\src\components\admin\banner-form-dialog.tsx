@@ -177,5 +177,3 @@ export function BannerFormDialog({ open, onOpenChange, onSuccess, banner }: Bann
         </Dialog>
     );
 }
-
-    
